@@ -1,0 +1,81 @@
+import 'package:devquiz/core/app_colors.dart';
+import 'package:devquiz/core/app_text_styles.dart';
+import 'package:devquiz/shared/widget/progress_indicatior/models/awser_model.dart';
+import 'package:flutter/material.dart';
+
+class AwserWidget extends StatelessWidget {
+  final AwserModel awnser;
+  final bool isSelected;
+  final bool disabled;
+  final ValueChanged<bool> onTap;
+  const AwserWidget ({Key? key,  
+  this.isSelected=false,
+  required this.awnser,
+  required this.onTap,
+   this.disabled=false,
+  
+  }): super(key:key);
+ // condições das cores de acordo a nossa seleção
+  Color get _selectedColorRight => awnser.isRight? AppColors.darkGreen: AppColors.darkRed;
+  Color get _selectedBorderRight => awnser.isRight? AppColors.lightGreen:AppColors.lightRed;
+  Color get _selectedColorCardRight => awnser.isRight? AppColors.lightGreen: AppColors.lightRed;
+  //Color get _selectedBorderCardRight => awnser.isRight? AppColors.green:AppColors.red;
+  TextStyle get _selectedTextStyleRight => awnser.isRight? AppTextStyles.bodyDarkGreen:AppTextStyles.bodyDarkRed;
+  IconData get _selectedIconRight => awnser.isRight? Icons.check: Icons.close;
+
+  
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: IgnorePointer(
+          ignoring: disabled,
+              child: GestureDetector(
+              onTap: (){
+                onTap(awnser.isRight);
+              },
+                child: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isSelected ?_selectedBorderRight:AppColors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.fromBorderSide(BorderSide(
+                color: isSelected? _selectedColorCardRight:AppColors.border,
+              ),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+              children: [
+
+                Expanded(
+                  child:Text(awnser.title,
+                  style: isSelected?_selectedTextStyleRight:AppTextStyles.body ,
+                ),
+                   ),
+                
+                Container(
+                  width: 24,
+                  height: 24,
+                 child: isSelected? Icon(
+                   _selectedIconRight,
+                  
+                  size: 16,
+                  color: AppColors.white,
+                 ):null,
+                 decoration: BoxDecoration(
+                   color:isSelected?_selectedColorRight:AppColors.white ,
+                   borderRadius: BorderRadius.circular(500),
+                   border: Border.fromBorderSide(
+                     BorderSide(color: isSelected?_selectedBorderRight:AppColors.lightGrey)
+                   )
+                 ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
